@@ -1,8 +1,9 @@
 import type { Application } from 'express';
 import express from 'express';
 import morgan from 'morgan';
-import { LOG_FORMAT } from './config';
+import { CREDENTIALS, LOG_FORMAT, ORIGIN } from './config';
 import { stream } from './utils/logger';
+import cors from 'cors';
 
 export class App {
   private app: Application;
@@ -23,5 +24,6 @@ export class App {
 
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
+    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
   }
 }
