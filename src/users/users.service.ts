@@ -1,9 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnprocessableEntityException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -12,25 +11,29 @@ export class UsersService {
     private readonly usersRepository: Repository<User>,
   ) {}
 
-  create(createUserDto: CreateUserDto) {
+  async create({ name, email, password }: CreateUserDto) {
+    const userExist = await this.checkUserExists(email);
+
+    if (userExist) {
+      throw new UnprocessableEntityException('This email exists.');
+    }
+
     const user = new User();
-    console.log(createUserDto);
-    user.name = createUserDto.name;
-
-    return this.usersRepository.save(user);
+    user.name = name;
+    user.email = email;
+    user.password = password;
+    await this.usersRepository.save(user);
   }
 
-  async findAll() {
-    return this.usersRepository.find();
+  getUser(id: string) {
+    console.log(id);
   }
 
-  async update(id: number, updateUserDto: UpdateUserDto) {
-    const user = await this.usersRepository.findOneBy({ id });
-    const updatedUser = { ...user, ...updateUserDto };
-    return this.usersRepository.save(updatedUser);
-  }
+  private async checkUserExists(email: string) {
+    const user = await this.usersRepository.findOne({
+      where: { email },
+    });
 
-  async delete(id: number) {
-    return this.usersRepository.delete(id);
+    return !!user;
   }
 }
