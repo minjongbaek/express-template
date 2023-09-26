@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, InternalServerErrorException, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -13,7 +13,13 @@ export class UsersController {
   }
 
   @Get()
+  async getUsers() {
+    return [];
+  }
+
+  @Get(':id')
   async getUserInfo() {
-    return 'hello';
+    throw new InternalServerErrorException();
+    // return 'hello';
   }
 }

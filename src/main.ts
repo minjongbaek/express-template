@@ -1,10 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
-import {
-  utilities as nestWinstonModuleUtilities,
-  WinstonModule,
-} from 'nest-winston';
+import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import * as winstonDaily from 'winston-daily-rotate-file';
 import { existsSync, mkdirSync } from 'fs';
@@ -23,10 +20,7 @@ async function bootstrap() {
         winston.format.timestamp({
           format: 'YYYY-MM-DD HH:mm:ss',
         }),
-        winston.format.printf(
-          ({ timestamp, level, message }) =>
-            `${timestamp} ${level}: ${message}`,
-        ),
+        winston.format.printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`),
       ),
       transports: [
         new winston.transports.Console({

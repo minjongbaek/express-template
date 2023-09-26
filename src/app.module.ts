@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { UsersModule } from './users/users.module';
 import { Module } from '@nestjs/common';
 import { ExceptionModule } from './exception/exception.module';
+import { LoggingModdule } from './logging/logging.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ExceptionModule } from './exception/exception.module';
     }),
     UsersModule,
     ExceptionModule,
+    LoggingModdule,
   ],
   controllers: [AppController],
   providers: [],

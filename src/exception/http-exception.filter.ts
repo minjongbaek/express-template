@@ -23,11 +23,9 @@ export class HttpExceptionFilter implements ExceptionFilter {
     }
 
     const response = (exception as HttpException).getResponse();
-
     const message = `[${req.method}] ${req.url}\n${stack}`;
 
     this.logger.error({ message });
-
     res.status((exception as HttpException).getStatus()).json(response);
   }
 }
