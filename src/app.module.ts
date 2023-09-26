@@ -4,6 +4,9 @@ import { UsersModule } from './users/users.module';
 import { Module } from '@nestjs/common';
 import { ExceptionModule } from './exception/exception.module';
 import { LoggingModdule } from './logging/logging.module';
+import { HealthCheckController } from './health-check/health-check.controller';
+import { TerminusModule } from '@nestjs/terminus';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -20,8 +23,10 @@ import { LoggingModdule } from './logging/logging.module';
     UsersModule,
     ExceptionModule,
     LoggingModdule,
+    TerminusModule,
+    HttpModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, HealthCheckController],
   providers: [],
 })
 export class AppModule {}
