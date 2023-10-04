@@ -1,5 +1,5 @@
 import { existsSync, mkdirSync } from 'fs';
-import { utilities as nestWinstonModuleUtilities, WinstonModule } from 'nest-winston';
+import { WinstonModule } from 'nest-winston';
 import * as winston from 'winston';
 import * as winstonDaily from 'winston-daily-rotate-file';
 import * as path from 'path';
@@ -13,18 +13,15 @@ export const createLogger = () => {
 
   const format = winston.format.combine(
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
-    winston.format.printf(({ timestamp, level, message }) => `${timestamp} ${level}: ${message}`),
+    winston.format.printf(
+      ({ timestamp, level, message, stack }) => `[NestApp] ${timestamp} ${level}: ${message} ${stack && '\n' + stack}`,
+    ),
   );
 
   const transports = [
     new winston.transports.Console({
       level: process.env.NODE_ENV === 'production' ? 'error' : 'debug',
-      format: winston.format.combine(
-        winston.format.timestamp(),
-        nestWinstonModuleUtilities.format.nestLike('NestApp', {
-          prettyPrint: true,
-        }),
-      ),
+      format,
     }),
     createWinstonDaily('error'),
   ];
