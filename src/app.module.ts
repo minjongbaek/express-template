@@ -23,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
       database: 'test',
       synchronize: true,
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
+      logging: process.env.NODE_ENV === 'production' ? false : true,
     }),
     UsersModule,
     ExceptionModule,

@@ -25,8 +25,12 @@ export class UsersService {
     await this.usersRepository.save(user);
   }
 
-  getUser(id: string) {
-    console.log(id);
+  async getUsers() {
+    return await this.usersRepository.find();
+  }
+
+  async getUser(id: number) {
+    return await this.usersRepository.findOne({ where: { id } });
   }
 
   private async checkUserExists(email: string) {

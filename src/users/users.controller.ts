@@ -1,4 +1,4 @@
-import { Body, Controller, Get, InternalServerErrorException, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 
@@ -9,17 +9,15 @@ export class UsersController {
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto) {
     await this.usersService.create(createUserDto);
-    // return `add ${createUserDto.name}`;
   }
 
   @Get()
   async getUsers() {
-    return [];
+    return await this.usersService.getUsers();
   }
 
   @Get(':id')
-  async getUserInfo() {
-    throw new InternalServerErrorException();
-    // return 'hello';
+  async getUserInfo(@Param('id') id: number) {
+    return await this.usersService.getUser(id);
   }
 }
